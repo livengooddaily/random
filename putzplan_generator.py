@@ -1,9 +1,20 @@
 import random
-import time
 
-start = time.time()
+bewohner = {
+    150: "Torben",
+    151: "Steffen",
+    152: "Mouad",
+    153: "Theo",
+    154: "Unknown",
+    155: "Max",
+    156: "Eddie",
+    157: "Jared",
+    158: "Robin",
+    159: "Jayant",
+    160: "Can"
+}
 
-room_numbers = [x + 1 for x in range(149,160)]
+room_numbers = list(bewohner.keys())
 results = []
 pairs = []
 count = 0
@@ -35,14 +46,6 @@ while len(pairs) != 11:
         results.append(room2)
         pairs.append([room1,room2])
 
-    if time.time()-start > 3:
-        print(f'Solution not found after {count} tries')
-        for room in room_numbers:
-            print(room, results.count(room))
-        print(results)
-        print(pairs)
-        break
-
 print(f'Solution found in {count} tries')
-for pair in pairs:
-    print(pair)
+for week, pair in enumerate(pairs):
+    print(f"Week {week + 1}: {bewohner[pair[0]]} and {bewohner[pair[1]]}")
