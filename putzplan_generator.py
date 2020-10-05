@@ -48,4 +48,4 @@ while len(pairs) != 11:
 
 print(f'Solution found in {count} tries')
 for week, pair in enumerate(pairs):
-    print(f"Week {week + 1}: {bewohner[pair[0]]} and {bewohner[pair[1]]}")
+    print(f"Woche {week + 1}: {bewohner[pair[0]]} ({pair[0]}) und {bewohner[pair[1]]} ({pair[1]})")
