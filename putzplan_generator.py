@@ -3,9 +3,9 @@ import random
 bewohner = {
     150: "Torben",
     151: "Steffen",
-    152: "Mouad",
+    152: "Kai",
     153: "Theo",
-    154: "Unknown",
+    154: "Nick",
     155: "Max",
     156: "Eddie",
     157: "Jared",
