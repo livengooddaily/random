@@ -15,37 +15,43 @@ bewohner = {
 }
 
 room_numbers = list(bewohner.keys())
-results = []
+successfully_added = []
 pairs = []
 count = 0
+number_of_weeks = len(bewohner)
 
-def has_occurred_twice(room_number, results):
-    return True if results.count(room_number) == 2 else False
+def has_occurred_twice(room_number, successfully_added):
+    return True if successfully_added.count(room_number) == 2 else False
 
-while len(pairs) != 11:
+while len(pairs) != number_of_weeks:
     count += 1
     room1 = random.choice(room_numbers)
     room2 = random.choice(room_numbers)
+    last_quarter = int(number_of_weeks * 0.75)
 
     if room1 == room2:
         pass
-    elif has_occurred_twice(room1, results):
+    elif has_occurred_twice(room1, successfully_added):
         room_numbers.remove(room1)
-        pass
-    elif has_occurred_twice(room2, results):
+    elif has_occurred_twice(room2, successfully_added):
         room_numbers.remove(room2)
-    elif len(results) < 8 and (room1 in results or room2 in results):
+    elif len(successfully_added) < last_quarter and (room1 in successfully_added or room2 in successfully_added):
         pass
-    elif len(results) >= 8 and (room1 in results[-8:] or room2 in results[-8:]):
-        if len(pairs) == 10:
+    elif len(successfully_added) >= last_quarter and (room1 in successfully_added[-last_quarter:] or room2 in successfully_added[-last_quarter:]):
+        if len(pairs) == number_of_weeks - 1:
             pairs.insert(0,[room1,room2])
+            successfully_added.append(room1)
+            successfully_added.append(room2)
         else:
             pass
     else:
-        results.append(room1)
-        results.append(room2)
+        successfully_added.append(room1)
+        successfully_added.append(room2)
         pairs.append([room1,room2])
 
 print(f'Solution found in {count} tries')
+room_numbers = list(bewohner.keys())
+for occurrence in [successfully_added.count(room) for room in room_numbers]:
+    print(occurrence)
 for week, pair in enumerate(pairs):
     print(f"Woche {week + 1}: {bewohner[pair[0]]} ({pair[0]}) und {bewohner[pair[1]]} ({pair[1]})")
