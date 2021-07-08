@@ -1,5 +1,14 @@
 import random
+import xlsxwriter
+import datetime
 
+# Name der Excel-Datei
+excel_datei = "putzplan.xlsx"
+
+# Start Datum
+datum = "16.08.2021"
+
+# Zimmernummer, Name des Bewohners
 bewohner = {
     150: "Torben",
     151: "Steffen",
@@ -13,6 +22,22 @@ bewohner = {
     159: "Jayant",
     160: "Can"
 }
+
+# Alle Küchendienst aufgaben
+aufgaben = [
+    "Mikrowelle", 
+    "Backofen (Bleck, Rost, Schutzbleck, Seiten)",
+    "Küche und Wohnzimmer saugen und wischen",
+    "ALLE Oberflächen",
+    "Abtropfgitter, Bestecktrockner",
+    "Beide Herdplatte",
+    "Küchenfenster (beidseitig)",
+    "Mülleimer (Innen- und Außenseite)",
+    "Toaster und Wasserkocher",
+    "Unterseite der Küchenschränke",
+    "Staubsauger saubern",
+    "Alle allgemeine Schränke putzen"
+]
 
 room_numbers = list(bewohner.keys())
 successfully_added = []
@@ -49,9 +74,34 @@ while len(pairs) != number_of_weeks:
         successfully_added.append(room2)
         pairs.append([room1,room2])
 
-print(f'Solution found in {count} tries')
-room_numbers = list(bewohner.keys())
-for occurrence in [successfully_added.count(room) for room in room_numbers]:
-    print(occurrence)
+print(f'Lösung in {count} Versuche gefunden\n------------ERGEBNISSE------------')
 for week, pair in enumerate(pairs):
     print(f"Woche {week + 1}: {bewohner[pair[0]]} ({pair[0]}) und {bewohner[pair[1]]} ({pair[1]})")
+
+
+workbook = xlsxwriter.Workbook(excel_datei)
+worksheet = workbook.add_worksheet()
+
+row = 0
+col = 1
+date = datetime.datetime.strptime(datum, "%d.%m.%Y")
+
+for pair in pairs:
+    room1 = pair[0]
+    room2 = pair[1]
+    end_date = date + datetime.timedelta(days=13)
+
+    worksheet.write(row, col, f"{room1} & {room2}")
+    worksheet.write(row+1, col, f"{date.strftime('%d.%m')}-{end_date.strftime('%d.%m')}")
+
+    date = end_date + datetime.timedelta(days=1)
+    col += 1
+
+col = 0
+row += 2
+
+for task in aufgaben:
+    worksheet.write(row, col, task)
+    row += 1
+
+workbook.close()
